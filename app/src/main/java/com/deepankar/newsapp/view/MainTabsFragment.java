@@ -56,7 +56,7 @@ public class MainTabsFragment extends Fragment implements MainTabsFragmentContra
 
     @Override
     public void setPresenter() {
-        presenter = new MainTabsFragmentPresenter(this);
+        presenter = new MainTabsFragmentPresenter(this, getContext());
     }
 
     @Override

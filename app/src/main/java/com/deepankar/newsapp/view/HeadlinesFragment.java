@@ -37,15 +37,18 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
 
     private String country;
     private String category;
+    private int sequence;
 
     public HeadlinesFragment(){
         this.country = "in";
         this.category = null;
+        this.sequence = 0;
     }
 
-    public HeadlinesFragment(String country, String category) {
+    public HeadlinesFragment(String country, String category, int sequence) {
         this.country = country;
         this.category = category;
+        this.sequence = sequence;
     }
 
     @Nullable
@@ -147,5 +150,9 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
     @Override
     public void setPresenter() {
         this.presenter = new HeadlinesFragmentPresenter(this, getContext());
+    }
+
+    public int getSequence() {
+        return sequence;
     }
 }

@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
@@ -64,8 +66,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.search, menu);
+        menuInflater.inflate(R.menu.home_menu, menu);
 
+        manageSearch(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_manage_home) {
+            startActivityForResult(new Intent(this, ManageHomeActivity.class), 100);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            initView();
+        }
+    }
+
+    private void manageSearch(Menu menu) {
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
         SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
@@ -97,13 +121,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 }
             });
         }
-
-        return true;
     }
 
     @Override
     public void setPresenter() {
-        presenter = new MainActivityPresenter(this);
+        presenter = new MainActivityPresenter(this, getApplicationContext());
     }
 
 //    private void addFragment() {
