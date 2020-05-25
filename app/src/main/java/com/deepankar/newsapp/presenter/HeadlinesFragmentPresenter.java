@@ -69,14 +69,6 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                     // show No Connectivity message to user or do whatever you want.
                     view.showToastMessage(t.getMessage());
                     //fetch data from DB
-//                    List<Article> articles = fetchNewsArticles();
-//                    NewsAPIResponse responseBody = new NewsAPIResponse();
-//                    responseBody.setArticles(articles);
-//                    responseBody.setStatus("Success");
-//                    responseBody.setTotalResults(articles.size());
-//
-//                    view.populateNewsData(responseBody);
-//                    view.showNewsDataView();
                     fetchNewsArticlesFromDB();
                 } else {
                     view.showToastMessage("Something went wrong...Please try later!");
