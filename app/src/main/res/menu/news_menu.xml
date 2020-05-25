@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.MainActivity">
+    <item
+        android:id="@+id/action_world"
+        android:orderInCategory="1"
+        android:title="@string/action_world"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_india"
+        android:orderInCategory="2"
+        android:title="@string/action_india"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_business"
+        android:orderInCategory="3"
+        android:title="@string/action_business"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_entertainment"
+        android:orderInCategory="4"
+        android:title="@string/action_entertainment"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_health"
+        android:orderInCategory="5"
+        android:title="@string/action_health"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_science"
+        android:orderInCategory="6"
+        android:title="@string/action_science"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_sports"
+        android:orderInCategory="7"
+        android:title="@string/action_sports"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_technology"
+        android:orderInCategory="8"
+        android:title="@string/action_technology"
+        app:showAsAction="collapseActionView" />
+</menu>

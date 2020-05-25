@@ -1,0 +1,122 @@
+package com.deepankar.newsapp.view;
+
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
+import com.deepankar.newsapp.R;
+import com.deepankar.newsapp.adapter.TabAdapter;
+import com.deepankar.newsapp.contract.MainActivityContract;
+import com.deepankar.newsapp.presenter.MainActivityPresenter;
+import com.deepankar.newsapp.utils.ActivityUtils;
+import com.google.android.material.tabs.TabLayout;
+
+import javax.inject.Inject;
+
+public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
+    private static String TAG = MainActivity.class.getSimpleName();
+
+    private MainActivityPresenter presenter;
+
+    private TabAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        setPresenter();
+
+        initView();
+    }
+
+    @Override
+    public void initView() {
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
+        adapter = new TabAdapter(getSupportFragmentManager());
+        presenter.addHeadlinesFragments();
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        //addFragment();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search, menu);
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+            final SearchView finalSearchView = searchView;
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    if (!finalSearchView.isIconified()) {
+                        finalSearchView.setIconified(true);
+                    }
+                    searchItem.collapseActionView();
+                    Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+                    intent.putExtra(SearchManager.QUERY, query);
+                    startActivity(intent);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                    return false;
+                }
+            });
+        }
+
+        return true;
+    }
+
+    @Override
+    public void setPresenter() {
+        presenter = new MainActivityPresenter(this);
+    }
+
+//    private void addFragment() {
+//        MainTabsFragment headlinesFragment = (MainTabsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+//        if (headlinesFragment == null) {
+//            headlinesFragment = MainTabsFragment.getInstance();
+//            ActivityUtils.addFragmentToActivity(
+//                    getSupportFragmentManager(), headlinesFragment, R.id.contentFrame);
+//        }
+//    }
+
+    @Override
+    public void addHeadlinesFragmentToAdapter(HeadlinesFragment fragment, int stringResourceId) {
+        adapter.addFragment(fragment, getString(stringResourceId));
+    }
+}

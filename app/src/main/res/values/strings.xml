@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">India News</string>
+    <string name="app_title">India News</string>
+    <string name="error_message">An error has occurred. Please try again by clicking REFRESH</string>
+    <string name="news_image">news_image</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_business">Business</string>
+    <string name="action_entertainment">Entertainment</string>
+    <string name="action_health">Health</string>
+    <string name="action_science">Science</string>
+    <string name="action_sports">Sports</string>
+    <string name="action_technology">Technology</string>
+    <string name="action_world">World</string>
+    <string name="action_open">Open</string>
+    <string name="action_share">share</string>
+    <string name="action_india">India</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">topic</string>
+</resources>
