@@ -39,7 +39,7 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
     private NewsCategory newsCategory;
 
     public HeadlinesFragment(){
-        this.newsCategory = new NewsCategory(R.string.action_india, "in", null, true,true, 1);
+        this.newsCategory = new NewsCategory(R.string.action_india, "in", null, true,true, 1, false);
     }
 
     public HeadlinesFragment(NewsCategory newsCategory) {

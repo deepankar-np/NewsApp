@@ -13,16 +13,18 @@ public class NewsCategory {
     private String country;
     private String category;
     private boolean isEnabled;
+    private boolean isDraggable;
     private boolean isAlwaysEnabled;
     private int sequence;
 
-    public NewsCategory(int nameId, String country, String category, boolean isAlwaysEnabled,  boolean isEnabled, int sequence) {
+    public NewsCategory(int nameId, String country, String category, boolean isAlwaysEnabled,  boolean isEnabled, int sequence, boolean isDraggable) {
         this.nameId = nameId;
         this.country = country;
         this.category = category;
         this.isAlwaysEnabled = isAlwaysEnabled;
         this.isEnabled = isEnabled;
         this.sequence = sequence;
+        this.isDraggable = isDraggable;
     }
 
     public NewsCategory(NewsCategory newsCategory) {
@@ -32,6 +34,7 @@ public class NewsCategory {
         this.isAlwaysEnabled = newsCategory.isAlwaysEnabled;
         this.isEnabled = newsCategory.isEnabled;
         this.sequence = newsCategory.sequence;
+        this.isDraggable = newsCategory.isDraggable;
     }
 
     public void setId(int id) {
@@ -72,5 +75,9 @@ public class NewsCategory {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public boolean isDraggable() {
+        return isDraggable;
     }
 }

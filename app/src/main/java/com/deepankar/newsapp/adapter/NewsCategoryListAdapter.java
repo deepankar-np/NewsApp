@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -29,6 +30,7 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<NewsCategory> newsCategoryList;
     private ItemTouchHelper touchHelper;
     private ManageHomePresenter presenter;
+    private Context context;
 
     public NewsCategoryListAdapter(ManageHomePresenter presenter) {
         this.presenter = presenter;
@@ -37,14 +39,15 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view;
         switch (viewType) {
             case HEADER_TYPE:
-                view = LayoutInflater.from(parent.getContext())
+                view = LayoutInflater.from(context)
                         .inflate(R.layout.news_category_list_section_header, parent, false);
                 return new NewsCategorySectionHeaderViewHolder(view);
             default:
-                view = LayoutInflater.from(parent.getContext())
+                view = LayoutInflater.from(context)
                         .inflate(R.layout.news_category_list_item, parent, false);
                 return new NewsCategoryViewHolder(view);
         }
@@ -53,21 +56,27 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         int itemViewType = getItemViewType(position);
+        final NewsCategory newsCategory = newsCategoryList.get(position);
+        int nameId = newsCategory.getNameId();
         if (itemViewType == CATEGORY_TYPE) {
-            ((NewsCategoryViewHolder) holder).categoryName.setText(newsCategoryList.get(position).getNameId());
-            ((NewsCategoryViewHolder) holder).reorderView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                        touchHelper.startDrag(holder);
+            ((NewsCategoryViewHolder) holder).categoryName.setText(nameId);
+            if(!newsCategory.isDraggable()){
+                ((NewsCategoryViewHolder) holder).reorderView.setVisibility(View.INVISIBLE);
+            }else{
+                ((NewsCategoryViewHolder) holder).reorderView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            touchHelper.startDrag(holder);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
+            }
         } else {
             NewsCategorySectionHeaderViewHolder headerViewHolder = (NewsCategorySectionHeaderViewHolder) holder;
             String text = "";
-            int nameId = newsCategoryList.get(position).getNameId();
+
             if (nameId == -1) {
                 text = "Enabled Categories";
             } else {
@@ -100,25 +109,43 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onViewMoved(int oldPosition, int newPosition) {
+        boolean moveAllowed = true;
         NewsCategory targetCategory = newsCategoryList.get(oldPosition);
-        NewsCategory category = new NewsCategory(targetCategory);
-        newsCategoryList.remove(oldPosition);
-        newsCategoryList.add(newPosition, category);
-        boolean afterDisabledHeader = false;
-        for (int i=0; i < newsCategoryList.size(); i++){
-            NewsCategory newsCategory =  newsCategoryList.get(i);
-            if(newsCategory.getNameId() == -2){
-                afterDisabledHeader = true;
+        if(targetCategory.isAlwaysEnabled()){
+            int disableHeaderPosition = 0;
+            for (int i=0; i < newsCategoryList.size(); i++){
+                NewsCategory newsCategory =  newsCategoryList.get(i);
+                if(newsCategory.getNameId() == -2){
+                    disableHeaderPosition = i;
+                    break;
+                }
             }
-            newsCategory.setSequence(i);
-            if(afterDisabledHeader){
-                newsCategory.setEnabled(false);
-            }else {
-                newsCategory.setEnabled(true);
+            if(newPosition >= disableHeaderPosition){
+                //Can not disable
+                moveAllowed = false;
+                Toast.makeText(context, "'"+context.getString(targetCategory.getNameId())+"' cannot be disabled!", Toast.LENGTH_SHORT).show();
             }
         }
-        presenter.updateNewsCategoryPreferences(newsCategoryList);
-        notifyItemMoved(oldPosition, newPosition);
+        if(moveAllowed) {
+            NewsCategory category = new NewsCategory(targetCategory);
+            newsCategoryList.remove(oldPosition);
+            newsCategoryList.add(newPosition, category);
+            boolean afterDisabledHeader = false;
+            for (int i = 0; i < newsCategoryList.size(); i++) {
+                NewsCategory newsCategory = newsCategoryList.get(i);
+                if (newsCategory.getNameId() == -2) {
+                    afterDisabledHeader = true;
+                }
+                newsCategory.setSequence(i);
+                if (afterDisabledHeader) {
+                    newsCategory.setEnabled(false);
+                } else {
+                    newsCategory.setEnabled(true);
+                }
+            }
+            presenter.updateNewsCategoryPreferences(newsCategoryList);
+            notifyItemMoved(oldPosition, newPosition);
+        }
     }
 
     @Override
