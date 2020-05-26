@@ -29,8 +29,6 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<NewsCategory> newsCategoryList;
     private ItemTouchHelper touchHelper;
     private ManageHomePresenter presenter;
-    private int enableSequence;
-    private int disableSequence;
 
     public NewsCategoryListAdapter(ManageHomePresenter presenter) {
         this.presenter = presenter;
@@ -69,12 +67,11 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else {
             NewsCategorySectionHeaderViewHolder headerViewHolder = (NewsCategorySectionHeaderViewHolder) holder;
             String text = "";
-            if (newsCategoryList.get(position).isEnabled()) {
+            int nameId = newsCategoryList.get(position).getNameId();
+            if (nameId == -1) {
                 text = "Enabled Categories";
-                enableSequence = position - 1;
             } else {
                 text = "Disabled Categories";
-                disableSequence = position - 1;
             }
             headerViewHolder.sectionTitle.setText(text);
         }
@@ -87,7 +84,8 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        if (newsCategoryList.get(position).getNameId() == -1) {
+        int nameId = newsCategoryList.get(position).getNameId();
+        if (nameId == -1 || nameId == -2) {
             return HEADER_TYPE;
         } else {
             return CATEGORY_TYPE;
@@ -103,17 +101,21 @@ public class NewsCategoryListAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onViewMoved(int oldPosition, int newPosition) {
         NewsCategory targetCategory = newsCategoryList.get(oldPosition);
-        targetCategory.setSequence(newPosition - 1);
-        if (newPosition >= disableSequence) {
-            targetCategory.setEnabled(false);
-        } else {
-            targetCategory.setEnabled(true);
-        }
         NewsCategory category = new NewsCategory(targetCategory);
         newsCategoryList.remove(oldPosition);
         newsCategoryList.add(newPosition, category);
+        boolean afterDisabledHeader = false;
         for (int i=0; i < newsCategoryList.size(); i++){
-            newsCategoryList.get(i).setSequence(i);
+            NewsCategory newsCategory =  newsCategoryList.get(i);
+            if(newsCategory.getNameId() == -2){
+                afterDisabledHeader = true;
+            }
+            newsCategory.setSequence(i);
+            if(afterDisabledHeader){
+                newsCategory.setEnabled(false);
+            }else {
+                newsCategory.setEnabled(true);
+            }
         }
         presenter.updateNewsCategoryPreferences(newsCategoryList);
         notifyItemMoved(oldPosition, newPosition);

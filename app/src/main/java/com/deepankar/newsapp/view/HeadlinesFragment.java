@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.deepankar.newsapp.R;
 import com.deepankar.newsapp.adapter.NewsAdapter;
 import com.deepankar.newsapp.contract.HeadlinesFragmentContract;
+import com.deepankar.newsapp.db.NewsCategory;
 import com.deepankar.newsapp.model.service.pojo.Article;
 import com.deepankar.newsapp.model.service.pojo.NewsAPIResponse;
 import com.deepankar.newsapp.presenter.HeadlinesFragmentPresenter;
@@ -35,20 +36,14 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
 
     private NewsAdapter mNewsAdapter;
 
-    private String country;
-    private String category;
-    private int sequence;
+    private NewsCategory newsCategory;
 
     public HeadlinesFragment(){
-        this.country = "in";
-        this.category = null;
-        this.sequence = 0;
+        this.newsCategory = new NewsCategory(R.string.action_india, "in", null, true,true, 1);
     }
 
-    public HeadlinesFragment(String country, String category, int sequence) {
-        this.country = country;
-        this.category = category;
-        this.sequence = sequence;
+    public HeadlinesFragment(NewsCategory newsCategory) {
+        this.newsCategory = newsCategory;
     }
 
     @Nullable
@@ -87,7 +82,7 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
 
         mRecyclerView.setAdapter(mNewsAdapter);
 
-        presenter.loadNewsData(country, category);
+        presenter.loadNewsData(newsCategory.getCountry(), newsCategory.getCategory());
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -101,7 +96,7 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
     private void displayDataBySelectedMenuItem() {
         mRecyclerView.removeAllViews();
         mNewsAdapter.setNewsData(null);
-        presenter.loadNewsData(country, category);
+        presenter.loadNewsData(newsCategory.getCountry(), newsCategory.getCategory());
         mNewsAdapter.notifyDataSetChanged();
     }
 
@@ -152,7 +147,7 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
         this.presenter = new HeadlinesFragmentPresenter(this, getContext());
     }
 
-    public int getSequence() {
-        return sequence;
+    public NewsCategory getNewsCategory() {
+        return newsCategory;
     }
 }

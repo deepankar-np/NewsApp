@@ -39,7 +39,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         }
         for (NewsCategory newsCategory : newsCategories) {
             if (newsCategory.getNameId() != -1 && newsCategory.isEnabled()) {
-                view.addHeadlinesFragmentToAdapter(new HeadlinesFragment(newsCategory.getCountry(), newsCategory.getCategory(), newsCategory.getSequence()), newsCategory.getNameId());
+                view.addHeadlinesFragmentToAdapter(new HeadlinesFragment(newsCategory), newsCategory.getNameId());
             }
         }
     }

@@ -27,6 +27,6 @@ public interface NewsCategoryDao {
     @Query("SELECT * FROM news_category order by sequence")
     public Single<List<NewsCategory>> getNewsCategories();
 
-    @Query(value = "SELECT * FROM news_category where isEnabled = 1 and nameId != -1")
+    @Query(value = "SELECT * FROM news_category where isEnabled = 1 and nameId != -1 order by sequence")
     public List<NewsCategory> getEnabledNewsCategories();
 }

@@ -18,7 +18,7 @@ public class NewsCategoryData {
             add(new NewsCategory(R.string.action_technology, "in", "technology", false,true, 6));
             add(new NewsCategory(R.string.action_health, "in", "health", false,true, 7));
             add(new NewsCategory(R.string.action_science, "in", "science", false,true, 8));
-            add(new NewsCategory(-1, "", null, true,false, 9));
+            add(new NewsCategory(-2, "", null, true,false, 9));
         }
     };
 

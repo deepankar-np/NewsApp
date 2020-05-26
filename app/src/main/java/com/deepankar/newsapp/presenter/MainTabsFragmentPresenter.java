@@ -35,7 +35,7 @@ public class MainTabsFragmentPresenter implements MainTabsFragmentContract.Prese
         List<NewsCategory> newsCategories = dao.getEnabledNewsCategories();
         for (NewsCategory newsCategory : newsCategories) {
             if (newsCategory.getNameId() != -1) {
-                view.addHeadlinesFragmentToAdapter(new HeadlinesFragment(newsCategory.getCountry(), newsCategory.getCategory(), newsCategory.getSequence()), newsCategory.getNameId());
+                view.addHeadlinesFragmentToAdapter(new HeadlinesFragment(newsCategory), newsCategory.getNameId());
             }
         }
     }
