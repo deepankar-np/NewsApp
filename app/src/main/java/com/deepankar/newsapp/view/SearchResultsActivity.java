@@ -141,9 +141,10 @@ public class SearchResultsActivity extends AppCompatActivity implements NewsAdap
     }
 
     @Override
-    public void onClick(Article article) {
+    public void onClick(Article article, int position) {
         Intent intent = new Intent(getApplicationContext(), com.deepankar.newsapp.view.ShortNewsActivity.class);
         intent.putExtra("article", article);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
 

@@ -136,9 +136,10 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
     }
 
     @Override
-    public void onClick(Article article) {
+    public void onClick(Article article, int position) {
         Intent intent = new Intent(getContext(), ShortNewsActivity.class);
         intent.putExtra("article", article);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
 

@@ -16,13 +16,13 @@ public interface ShortNewsActivityContract {
         void showFullNews(Article article);
         void hideNewsButton();
         void showNewsButton(Article article);
+        void openNextArticle(Article article, int position);
     }
 
     interface Presenter extends BasePresenter {
         void openNews(Intent intent);
         String getArticleUrl();
         String getArticleTitle();
-
-
+        void openNextNews(Intent intent);
     }
 }

@@ -3,6 +3,7 @@ package com.deepankar.newsapp.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MotionEventCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,15 +11,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.deepankar.newsapp.R;
 import com.deepankar.newsapp.contract.ShortNewsActivityContract;
 import com.deepankar.newsapp.model.service.pojo.Article;
 import com.deepankar.newsapp.presenter.ShortNewsActivityPresenter;
+import com.deepankar.newsapp.utils.OnSwipeTouchListener;
 import com.deepankar.newsapp.utils.StringUtils;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +35,8 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
     private TextView newsSource;
     private TextView shortNews;
     private Button newsButton;
+
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,18 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
 
         setPresenter();
         initView();
+
+        relativeLayout = findViewById(R.id.short_news_relative_layout);
+        //relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()));
+        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getActionMasked() == MotionEvent.ACTION_UP) {
+                    presenter.openNextNews(getIntent());
+                }
+                return true;
+            }
+    });
     }
 
     @Override
@@ -81,6 +99,14 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
                 showFullNews(article);
             }
         });
+    }
+
+    @Override
+    public void openNextArticle(Article article, int position) {
+        Intent intent = new Intent(getApplicationContext(), ShortNewsActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("article", article);
+        startActivity(intent);
     }
 
     @Override
@@ -148,6 +174,6 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
 
     @Override
     public void setPresenter() {
-        presenter = new ShortNewsActivityPresenter(this);
+        presenter = new ShortNewsActivityPresenter(this, getApplicationContext());
     }
 }

@@ -2,12 +2,9 @@ package com.deepankar.newsapp.presenter;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
 import com.deepankar.newsapp.contract.HeadlinesFragmentContract;
-import com.deepankar.newsapp.db.AppDatabase;
-import com.deepankar.newsapp.db.NewsArticleDao;
 import com.deepankar.newsapp.db.NewsArticle;
+import com.deepankar.newsapp.db.NewsArticleDBUtil;
 import com.deepankar.newsapp.model.HeadlinesModel;
 import com.deepankar.newsapp.model.service.NoConnectivityException;
 import com.deepankar.newsapp.model.service.pojo.Article;
@@ -17,7 +14,6 @@ import com.deepankar.newsapp.model.service.pojo.Source;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
@@ -33,14 +29,12 @@ import retrofit2.Response;
 public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Presenter {
     private HeadlinesFragmentContract.View view;
     private HeadlinesModel model;
-    private AppDatabase database;
+    private NewsArticleDBUtil dbUtil;
 
     public HeadlinesFragmentPresenter(HeadlinesFragmentContract.View view, Context context) {
         this.view = view;
         this.model = new HeadlinesModel(context);
-        this.database = Room.databaseBuilder(context, AppDatabase.class, "db-news-articles")
-                //.allowMainThreadQueries()
-                .build();
+        this.dbUtil = new NewsArticleDBUtil(context);
     }
 
     @Override
@@ -104,7 +98,6 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
             }
 
             private void saveNewsArticles(final List<Article> articles) {
-                NewsArticleDao newsArticleDao = database.getNewsArticleDao();
                 List<NewsArticle> newsArticles = new ArrayList<>();
                 for (Article article :
                         articles) {
@@ -124,14 +117,12 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                     newsArticles.add(newsArticle);
                 }
                 if (newsArticles.size() > 0) {
-                    newsArticleDao.deleteAll();
-                    newsArticleDao.insert(newsArticles);
+                    dbUtil.deleteAndSaveNewsArticles(newsArticles);
                 }
             }
 
             private void fetchNewsArticlesFromDB() {
-                NewsArticleDao newsArticleDao = database.getNewsArticleDao();
-                newsArticleDao.getNewsArticles()
+                dbUtil.getNewsArticles()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(new Consumer<List<NewsArticle>>() {

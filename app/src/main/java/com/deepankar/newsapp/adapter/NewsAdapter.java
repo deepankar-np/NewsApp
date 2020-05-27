@@ -79,7 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
     }
 
     public interface NewsAdapterOnClickHandler {
-        void onClick(Article article);
+        void onClick(Article article, int position);
     }
 
     public class NewsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -106,7 +106,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterVie
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             Article article = mNewsData.getArticles().get(adapterPosition);
-            mClickHandler.onClick(article);
+            mClickHandler.onClick(article, adapterPosition);
         }
     }
 }
