@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_manage_home) {
-            startActivityForResult(new Intent(this, ManageHomeActivity.class), 100);
+            startActivityForResult(new Intent(this, SettingsActivity.class), 100);
         }
         return super.onOptionsItemSelected(item);
     }

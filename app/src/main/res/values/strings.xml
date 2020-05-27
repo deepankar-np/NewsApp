@@ -18,4 +18,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_hint">topic</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="display_header">Display</string>
+    <string name="manage_home_header">Manage Home</string>
+
+    <!-- Display Preferences -->
+    <string name="theme_title">Theme</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Manage Home Preferences -->
+    <string name="news_category_title">Choose news categories</string>
 </resources>

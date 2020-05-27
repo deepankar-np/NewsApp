@@ -8,7 +8,15 @@
         android:label="@string/app_title"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ManageHomeActivity"></activity>
+        <activity
+            android:name=".view.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+        <activity android:name=".view.ManageHomeActivity" >
+            <intent-filter>
+                <action android:name="com.deepankar.newsapp.view.ManageHomeActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.SearchResultsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -34,9 +42,10 @@
             android:name="android.app.default_searchable"
             android:value=".view.SearchResultsActivity" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
