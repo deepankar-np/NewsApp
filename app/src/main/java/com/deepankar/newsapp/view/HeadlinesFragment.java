@@ -145,7 +145,7 @@ public class HeadlinesFragment extends Fragment implements NewsAdapter.NewsAdapt
 
     @Override
     public void setPresenter() {
-        this.presenter = new HeadlinesFragmentPresenter(this, getContext());
+        this.presenter = new HeadlinesFragmentPresenter(this, getContext(), this);
     }
 
     public NewsCategory getNewsCategory() {

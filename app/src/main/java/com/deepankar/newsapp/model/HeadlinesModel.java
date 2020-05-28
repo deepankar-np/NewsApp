@@ -2,21 +2,35 @@ package com.deepankar.newsapp.model;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
-import com.deepankar.newsapp.db.AppDatabase;
-import com.deepankar.newsapp.model.service.pojo.NewsAPIResponse;
-import com.deepankar.newsapp.model.service.NewaApiInterface;
+import com.deepankar.newsapp.core.MyApplication;
+import com.deepankar.newsapp.core.NetworkApi;
+import com.deepankar.newsapp.core.component.DaggerMainActivityComponent;
+import com.deepankar.newsapp.core.component.MainActivityComponent;
+import com.deepankar.newsapp.core.module.HeadlinesFragmentModule;
+import com.deepankar.newsapp.core.module.MainActivityModule;
 import com.deepankar.newsapp.model.service.NewsApiClient;
+import com.deepankar.newsapp.model.service.pojo.NewsAPIResponse;
+import com.deepankar.newsapp.model.service.APIInterface;
+import com.deepankar.newsapp.view.HeadlinesFragment;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
+import retrofit2.Retrofit;
 
 public class HeadlinesModel {
-    private NewaApiInterface service;
+    private APIInterface service;
 
+    @Inject
+    Retrofit retrofit;
 
-    public HeadlinesModel(Context context) {
-        service = NewsApiClient.getRetrofitInstance(context).create(NewaApiInterface.class);
+    public HeadlinesModel(Context context, HeadlinesFragment headlinesFragment) {
+        //DaggerMainActivityComponent.builder().headlinesFragmentModule(new HeadlinesFragmentModule(headlinesFragment)).build();
+
+        // ((MyApplication)headlinesFragment.getContext()).getAppComponent().injectHeadlinesFragment(headlinesFragment);
+
+        //service = retrofit.create(APIInterface.class);
+        service = NewsApiClient.getRetrofitInstance(context).create(APIInterface.class);
     }
 
     public Call<NewsAPIResponse> getTopHeadlines(String country, String category) {

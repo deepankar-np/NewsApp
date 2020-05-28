@@ -21,8 +21,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.deepankar.newsapp.R;
 import com.deepankar.newsapp.adapter.TabAdapter;
 import com.deepankar.newsapp.contract.MainActivityContract;
+import com.deepankar.newsapp.core.MyApplication;
+import com.deepankar.newsapp.core.NetworkApi;
+import com.deepankar.newsapp.core.component.DaggerMainActivityComponent;
+import com.deepankar.newsapp.core.module.MainActivityModule;
 import com.deepankar.newsapp.presenter.MainActivityPresenter;
-import com.deepankar.newsapp.utils.ActivityUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import javax.inject.Inject;
@@ -37,7 +40,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private ViewPager viewPager;
 
     @Inject
-    SharedPreferences sharedPreferences;
+    NetworkApi networkApi;
+
+    //@Inject
+    //SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DaggerMainActivityComponent.builder()
+                .applicationComponent(((MyApplication) this.getApplicationContext()).getAppComponent()).mainActivityModule(new MainActivityModule(this)).build();
         setPresenter();
 
         initView();

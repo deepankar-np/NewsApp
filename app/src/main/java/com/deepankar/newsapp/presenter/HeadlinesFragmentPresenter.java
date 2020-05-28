@@ -11,6 +11,7 @@ import com.deepankar.newsapp.model.service.pojo.Article;
 import com.deepankar.newsapp.model.service.pojo.NewsAPIResponse;
 import com.deepankar.newsapp.model.service.pojo.Source;
 import com.deepankar.newsapp.utils.StringUtils;
+import com.deepankar.newsapp.view.HeadlinesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
     private HeadlinesModel model;
     private NewsArticleDBUtil dbUtil;
 
-    public HeadlinesFragmentPresenter(HeadlinesFragmentContract.View view, Context context) {
+    public HeadlinesFragmentPresenter(HeadlinesFragmentContract.View view, Context context, HeadlinesFragment headlinesFragment) {
         this.view = view;
-        this.model = new HeadlinesModel(context);
+        this.model = new HeadlinesModel(context, headlinesFragment);
         this.dbUtil = new NewsArticleDBUtil(context);
     }
 

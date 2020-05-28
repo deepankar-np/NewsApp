@@ -3,6 +3,7 @@
     package="com.deepankar.newsapp">
 
     <application
+        android:name=".core.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icons8_news_512"
         android:label="@string/app_title"
