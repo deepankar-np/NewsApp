@@ -17,6 +17,7 @@ public class NewsArticle {
     private String urlToImage;
     private String publishedAt;
     private String content;
+    private String searchKey;
 
     public int getId() {
         return id;
@@ -96,5 +97,13 @@ public class NewsArticle {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSearchKey() {
+        return searchKey;
+    }
+
+    public void setSearchKey(String searchKey) {
+        this.searchKey = searchKey;
     }
 }

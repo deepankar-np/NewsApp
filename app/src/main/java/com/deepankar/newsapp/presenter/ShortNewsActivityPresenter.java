@@ -77,7 +77,7 @@ public class ShortNewsActivityPresenter implements ShortNewsActivityContract.Pre
     }
 
     private void fetchNewsArticlesFromDB(final int position) {
-        dbUtil.getNewsArticles()
+        dbUtil.getNewsArticles(article.getSearchKey())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<NewsArticle>>() {
@@ -98,6 +98,7 @@ public class ShortNewsActivityPresenter implements ShortNewsActivityContract.Pre
                             source.setId(newsArticle.getSourceId());
                             source.setName(newsArticle.getSourceName());
                             article.setSource(source);
+                            article.setSearchKey(newsArticle.getSearchKey());
                             view.openNextArticle(article, newPosition);
                         }else{
                             Toast.makeText(context, "That's All!", Toast.LENGTH_SHORT).show();

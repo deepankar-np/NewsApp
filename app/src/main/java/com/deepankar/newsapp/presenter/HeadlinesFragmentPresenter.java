@@ -10,6 +10,7 @@ import com.deepankar.newsapp.model.service.NoConnectivityException;
 import com.deepankar.newsapp.model.service.pojo.Article;
 import com.deepankar.newsapp.model.service.pojo.NewsAPIResponse;
 import com.deepankar.newsapp.model.service.pojo.Source;
+import com.deepankar.newsapp.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,10 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
     }
 
     @Override
-    public void loadNewsData(String country, String category) {
+    public void loadNewsData(final String country, final String category) {
         view.showProgressBar();
         //showNewsDataView();
-        Call<NewsAPIResponse> call = model.getTopHeadlines(country, category);
+        final Call<NewsAPIResponse> call = model.getTopHeadlines(country, category);
         call.enqueue(new Callback<NewsAPIResponse>() {
             @Override
             public void onResponse(Call<NewsAPIResponse> call, Response<NewsAPIResponse> response) {
@@ -49,6 +50,10 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                 if (responseBody == null || responseBody.getArticles().size() == 0) {
                     view.showErrorMessage();
                 } else {
+                    String searchKey = StringUtils.getNotNullString(country) + "_" + StringUtils.getNotNullString(category);
+                    for (Article article : responseBody.getArticles()) {
+                        article.setSearchKey(searchKey);
+                    }
                     //save data in DB
                     createNewThreadAndSave(responseBody.getArticles());
 
@@ -63,7 +68,8 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                     // show No Connectivity message to user or do whatever you want.
                     view.showToastMessage(t.getMessage());
                     //fetch data from DB
-                    fetchNewsArticlesFromDB();
+                    String searchKey = StringUtils.getNotNullString(country) + "_" + StringUtils.getNotNullString(category);
+                    fetchNewsArticlesFromDB(searchKey);
                 } else {
                     view.showToastMessage("Something went wrong...Please try later!");
                 }
@@ -99,8 +105,7 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
 
             private void saveNewsArticles(final List<Article> articles) {
                 List<NewsArticle> newsArticles = new ArrayList<>();
-                for (Article article :
-                        articles) {
+                for (Article article : articles) {
                     NewsArticle newsArticle = new NewsArticle();
                     Source source = article.getSource();
                     if (source != null) {
@@ -114,15 +119,18 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                     newsArticle.setTitle(article.getTitle());
                     newsArticle.setUrl(article.getUrl());
                     newsArticle.setUrlToImage(article.getUrlToImage());
+                    newsArticle.setSearchKey(article.getSearchKey());
+
                     newsArticles.add(newsArticle);
                 }
                 if (newsArticles.size() > 0) {
-                    dbUtil.deleteAndSaveNewsArticles(newsArticles);
+                    String searchKey = newsArticles.get(0).getSearchKey();
+                    dbUtil.deleteAndSaveNewsArticles(newsArticles, searchKey);
                 }
             }
 
-            private void fetchNewsArticlesFromDB() {
-                dbUtil.getNewsArticles()
+            private void fetchNewsArticlesFromDB(String searchKey) {
+                dbUtil.getNewsArticles(searchKey)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(new Consumer<List<NewsArticle>>() {
@@ -143,6 +151,7 @@ public class HeadlinesFragmentPresenter implements HeadlinesFragmentContract.Pre
                                     source.setId(newsArticle.getSourceId());
                                     source.setName(newsArticle.getSourceName());
                                     article.setSource(source);
+                                    article.setSearchKey(newsArticle.getSearchKey());
 
                                     articles.add(article);
                                 }

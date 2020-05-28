@@ -24,6 +24,12 @@ public interface NewsArticleDao {
     @Query("DELETE FROM news_article")
     public void deleteAll();
 
+    @Query("DELETE FROM news_article where searchKey = :searchKey")
+    public void deleteAllByCountryAndCategory(String searchKey);
+
     @Query("SELECT * FROM news_article")
     public Single<List<NewsArticle>> getNewsArticles();
+
+    @Query("SELECT * FROM news_article where searchKey = :searchKey")
+    public Single<List<NewsArticle>> getNewsArticles(String searchKey);
 }

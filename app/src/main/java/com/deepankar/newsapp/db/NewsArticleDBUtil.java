@@ -17,14 +17,14 @@ public class NewsArticleDBUtil {
                 .build();
     }
 
-    public Single<List<NewsArticle>> getNewsArticles(){
+    public Single<List<NewsArticle>> getNewsArticles(String searchKey){
         NewsArticleDao newsArticleDao = database.getNewsArticleDao();
-        return newsArticleDao.getNewsArticles();
+        return newsArticleDao.getNewsArticles(searchKey);
     }
 
-    public void deleteAndSaveNewsArticles(List<NewsArticle> newsArticles){
+    public void deleteAndSaveNewsArticles(List<NewsArticle> newsArticles, String searchKey){
         NewsArticleDao newsArticleDao = database.getNewsArticleDao();
-        newsArticleDao.deleteAll();
+        newsArticleDao.deleteAllByCountryAndCategory(searchKey);
         newsArticleDao.insert(newsArticles);
     }
 }

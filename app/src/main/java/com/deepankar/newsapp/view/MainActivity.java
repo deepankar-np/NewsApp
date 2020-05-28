@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.deepankar.newsapp.R;
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+        checkThemeAndApply();
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -50,6 +53,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         setPresenter();
 
         initView();
+    }
+
+    private void checkThemeAndApply() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPreferences.getString("theme", "MODE_NIGHT_FOLLOW_SYSTEM");
+        int mode;
+        switch (theme) {
+            case "MODE_NIGHT_NO":
+                mode = AppCompatDelegate.MODE_NIGHT_NO;
+                break;
+            case "MODE_NIGHT_YES":
+                mode = AppCompatDelegate.MODE_NIGHT_YES;
+                break;
+            default:
+                mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+                break;
+        }
+        AppCompatDelegate.setDefaultNightMode(mode);
     }
 
     @Override
@@ -84,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100) {
+        if (requestCode == 100) {
             initView();
         }
     }

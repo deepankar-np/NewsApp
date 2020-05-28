@@ -32,6 +32,8 @@ public class Article implements Serializable {
     @Expose
     private Object content;
 
+    private String searchKey;
+
     public Source getSource() {
         return source;
     }
@@ -96,4 +98,11 @@ public class Article implements Serializable {
         this.content = content;
     }
 
+    public void setSearchKey(String searchKey) {
+        this.searchKey = searchKey;
+    }
+
+    public String getSearchKey() {
+        return searchKey;
+    }
 }
