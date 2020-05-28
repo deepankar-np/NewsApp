@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="android:statusBarColor">@color/toolbarColor</item>
         <item name="android:textViewStyle">@style/quicksandTextViewStyle</item>
         <item name="buttonStyle">@style/quicksandButtonStyle</item>
@@ -15,6 +15,7 @@
         <item name="android:webTextViewStyle">@style/quicksandWebTextView</item>
         <item name="android:tabWidgetStyle">@style/quicksandTabStyle</item>
         <item name="android:searchViewStyle">@style/searchViewStyle</item>
+        <item name="preferenceTheme">@style/PreferenceStyle</item>
     </style>
 
     <style name="quicksandTextViewStyle" parent="android:Widget.TextView">
@@ -68,5 +69,22 @@
         <item name="tabPaddingEnd">8dp</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabSelectedTextColor">#1f2124</item>
+    </style>
+
+    <style name="PreferenceStyle" parent="@style/PreferenceThemeOverlay">
+        <item name="preferenceCategoryStyle">@style/CustomPreferenceCategory</item>
+    </style>
+
+    <style name="CustomPreferenceCategory" parent="@style/Preference.Category">
+        <item name="android:layout">@layout/settings_text</item>
+    </style>
+
+    <style name="CustomPreferenceCategoryText" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorDialogPop</item>
+        <item name="android:textColorSecondary">@color/colorDialogPop</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:padding">@dimen/padding_large</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 </resources>

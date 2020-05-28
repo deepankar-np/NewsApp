@@ -4,13 +4,11 @@
         <item>System default</item>
         <item>Light</item>
         <item>Dark</item>
-        <item>Dark at night, light in the day</item>
     </string-array>
 
     <string-array name="theme_values">
         <item>MODE_NIGHT_FOLLOW_SYSTEM</item>
         <item>MODE_NIGHT_NO</item>
         <item>MODE_NIGHT_YES</item>
-        <item>MODE_NIGHT_AUTO_TIME</item>
     </string-array>
 </resources>

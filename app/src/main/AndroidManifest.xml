@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".view.MainActivity"></activity>
         <activity android:name=".view.ManageHomeActivity" >
             <intent-filter>
                 <action android:name="com.deepankar.newsapp.view.ManageHomeActivity" />

@@ -4,18 +4,22 @@
     <PreferenceCategory app:title="@string/display_header">
 
         <ListPreference
+            android:padding="@dimen/padding_medium"
             app:defaultValue="MODE_NIGHT_FOLLOW_SYSTEM"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme"
             app:title="@string/theme_title"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            android:icon="@drawable/day_and_night"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/manage_home_header">
 
-        <Preference app:title="@string/news_category_title">
+        <Preference app:title="@string/news_category_title"
+            android:padding="@dimen/padding_medium"
+            android:icon="@drawable/list">
             <intent android:action="com.deepankar.newsapp.view.ManageHomeActivity" />
         </Preference>
     </PreferenceCategory>

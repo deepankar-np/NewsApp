@@ -8,4 +8,8 @@
     <color name="tabSelectedTextColor">#3F51B5</color>
     <color name="textColor">#000000</color>
     <color name="toolbarColor">#3F51B5</color>
+    <color name="colorDialogPop">#3F51B5</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorSecondary">#000000</color>
+    <color name="textColorHighlight">#3F51B5</color>
 </resources>
