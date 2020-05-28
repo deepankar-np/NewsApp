@@ -24,5 +24,6 @@ public interface ShortNewsActivityContract {
         String getArticleUrl();
         String getArticleTitle();
         void openNextNews(Intent intent);
+        void openPreviousNews(Intent intent);
     }
 }

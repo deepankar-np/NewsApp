@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.FullNewsActivity" />
-        <activity android:name=".view.ShortNewsActivity" />
+        <activity android:name=".view.ShortNewsActivity"
+            android:parentActivityName=".view.MainActivity"/>
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -50,7 +50,8 @@ public class ShortNewsActivityPresenter implements ShortNewsActivityContract.Pre
         if (content != null && !content.isEmpty()) {
             view.showShortNews(content);
         } else {
-            view.showFullNews(article);
+            view.showShortNews(article.getDescription());
+            //view.showFullNews(article);
         }
 
         if (article.getUrl() == null) {
@@ -73,18 +74,23 @@ public class ShortNewsActivityPresenter implements ShortNewsActivityContract.Pre
     @Override
     public void openNextNews(Intent intent) {
         int position = intent.getIntExtra("position", -1);
-        fetchNewsArticlesFromDB(position);
+        fetchNewsArticlesFromDB(position + 1);
     }
 
-    private void fetchNewsArticlesFromDB(final int position) {
+    @Override
+    public void openPreviousNews(Intent intent) {
+        int position = intent.getIntExtra("position", -1);
+        fetchNewsArticlesFromDB(position - 1);
+    }
+
+    private void fetchNewsArticlesFromDB(final int newPosition) {
         dbUtil.getNewsArticles(article.getSearchKey())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<NewsArticle>>() {
                     @Override
                     public void accept(List<NewsArticle> newsArticles) throws Exception {
-                        int newPosition = position+1;
-                        if(newsArticles.size()>newPosition){
+                        if (newPosition != -1 && newsArticles.size() > newPosition) {
                             NewsArticle newsArticle = newsArticles.get(newPosition);
                             Article article = new Article();
                             article.setAuthor(newsArticle.getAuthor());
@@ -100,7 +106,7 @@ public class ShortNewsActivityPresenter implements ShortNewsActivityContract.Pre
                             article.setSource(source);
                             article.setSearchKey(newsArticle.getSearchKey());
                             view.openNextArticle(article, newPosition);
-                        }else{
+                        } else {
                             Toast.makeText(context, "That's All!", Toast.LENGTH_SHORT).show();
                         }
                     }

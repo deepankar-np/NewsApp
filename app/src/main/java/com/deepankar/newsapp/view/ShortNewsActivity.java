@@ -53,16 +53,27 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
         initView();
 
         relativeLayout = findViewById(R.id.short_news_relative_layout);
-        //relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()));
-        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+        relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-                    presenter.openNextNews(getIntent());
-                }
-                return true;
+            public void onSwipeRight() {
+
             }
-    });
+
+            @Override
+            public void onSwipeLeft() {
+
+            }
+
+            @Override
+            public void onSwipeTop() {
+                presenter.openNextNews(getIntent());
+            }
+
+            @Override
+            public void onSwipeBottom() {
+                presenter.openPreviousNews(getIntent());
+            }
+        });
     }
 
     @Override
@@ -107,6 +118,7 @@ public class ShortNewsActivity extends AppCompatActivity implements ShortNewsAct
         intent.putExtra("position", position);
         intent.putExtra("article", article);
         startActivity(intent);
+        finish();
     }
 
     @Override

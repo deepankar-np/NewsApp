@@ -5,15 +5,17 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class OnSwipeTouchListener implements View.OnTouchListener {
+public abstract class OnSwipeTouchListener implements View.OnTouchListener {
     // Fields:
-    /** Whether a swipe motion has been detected */
+    /**
+     * Whether a swipe motion has been detected
+     */
     protected boolean isSwipeDetected = false;
     private final GestureDetector gestureDetector;
 
 
     // Constructors:
-    public OnSwipeTouchListener (Context ctx) {
+    public OnSwipeTouchListener(Context ctx) {
         gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 
@@ -65,17 +67,13 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
-    }
+    public abstract void onSwipeRight();
 
-    public void onSwipeLeft() {
-    }
+    public abstract void onSwipeLeft();
 
-    public void onSwipeTop() {
-    }
+    public abstract void onSwipeTop();
 
-    public void onSwipeBottom() {
-    }
+    public abstract void onSwipeBottom();
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
